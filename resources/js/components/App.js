@@ -1,20 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import "./fontawesome";
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Home from "./Home";
+import dashboard from "./dashboard";
+import createPosts from "./createPosts";
+import EditPosts from "./EditPosts";
+import Navbar from "./navbar";
+import "../../css/app.css";
 
-export default class App extends Component {
-    render() {
-        return (
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">App Component</div>
+function App() {
+    return (
+        <Router>
+        <>
+        <Navbar />
+            <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/dashboard" exact component={dashboard} />
+                <Route path="/addPosts" exact component={createPosts} />
+                <Route path="/edit/:id" exact component={EditPosts} />
+            </Switch>
+        </>
+        </Router>
+    );
+}
 
-                            <div className="card-body">I'm an App component!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+export default App;
+
+if (document.getElementById('App')) {
+    ReactDOM.render(<App />, document.getElementById('App'));
 }

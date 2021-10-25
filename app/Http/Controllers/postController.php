@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
-class postsController extends Controller
+class postController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,8 @@ class postsController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('updated_at', 'DESC')->get();
+        return response() -> json(['status' => 200, 'posts' => $posts]);
     }
 
     /**
@@ -34,7 +36,14 @@ class postsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newPost = Post::create([
+            'title' => $request->title,
+            'type' => $request->type,
+            'description' => $request->description
+        ]);
+        if($newPost){
+            return response()->json(["status" => 200]);
+        }
     }
 
     /**
@@ -56,7 +65,8 @@ class postsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $posts = Post::find($id);
+        return response()->json(['status' => 200, 'posts' => $posts]);
     }
 
     /**
@@ -68,7 +78,13 @@ class postsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $posts = Post::find($id);
+        $posts->title = $request->title;
+        $posts->type = $request->type;
+        $posts->description = $request->description;
+        if($posts -> save()){
+            return response()->json(["status" => 200]);
+        }
     }
 
     /**
@@ -79,6 +95,9 @@ class postsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $posts = Post::find($id);
+        if($posts -> delete()){
+            return response()->json(["status" => 200]);
+        }
     }
 }
